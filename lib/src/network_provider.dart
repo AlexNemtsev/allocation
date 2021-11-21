@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class NetworkProvider {
   NetworkProvider(this._client);
-  Client _client;
+  final Client _client;
 
   Future<String> getBoardId(String secid) async {
     final response = await _client.get(Uri.parse(
