@@ -13,5 +13,7 @@ Map<String, String> boardIds = {
   'TSPX': 'TQTD',
   'FXUS': 'TQTF',
   'RU000A1004K1': 'TQCB',
-  'SU26220RMFS2': 'TQOB'
+  'SU26220RMFS2': 'TQOB',
+  'AAPL': 'FQBR',
+  'KO': 'FQBR'
 };
