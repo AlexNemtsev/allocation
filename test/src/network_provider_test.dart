@@ -31,10 +31,12 @@ void main() {
     NetworkProvider networkProvider = NetworkProvider(client);
 
     Map<String, List<dynamic>> data =
-        await networkProvider.fetchSharesData(boardId);
+        await networkProvider.fetchData(boardId);
 
     expect(data, equals(sharesData));
   });
 
-
+  test('Throw an exeption when http call completed with an error', () {
+    
+  });
 }

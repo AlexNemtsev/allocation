@@ -1,5 +1,6 @@
 import 'package:http/http.dart';
 import 'dart:convert';
+
 // Этот класс должен выполнять две функции
 // TODO: Возврат таблиц securities
 class NetworkProvider {
@@ -10,42 +11,46 @@ class NetworkProvider {
   late Client _client;
 
   final Map<String, String> _boardIds = {
-		"SMAL": 'shares',
-		"SPEQ": 'shares',
-		"TQBR": 'shares',
-		"TQDP": 'shares',
-		"TQFD": 'shares',
-		"TQFE": 'shares',
-		"TQIF": 'shares',
-		"TQPD": 'shares',
-		"TQPE": 'shares',
-		"TQPI": 'shares',
-		"TQTD": 'shares',
-		"TQTE": 'shares',
-		"TQTF": 'shares',
-		"AUCT": 'bonds',
-		"PACT": 'bonds',
-		"SPOB": 'bonds',
-		"TQCB": 'bonds',
-		"TQDB": 'bonds',
-		"TQDU": 'bonds',
-		"TQIR": 'bonds',
-		"TQIU": 'bonds',
-		"TQOB": 'bonds',
-		"TQOD": 'bonds',
-		"TQOE": 'bonds',
-		"TQRD": 'bonds',
-		"TQUD": 'bonds'
+    "SMAL": 'shares',
+    "SPEQ": 'shares',
+    "TQBR": 'shares',
+    "TQDP": 'shares',
+    "TQFD": 'shares',
+    "TQFE": 'shares',
+    "TQIF": 'shares',
+    "TQPD": 'shares',
+    "TQPE": 'shares',
+    "TQPI": 'shares',
+    "TQTD": 'shares',
+    "TQTE": 'shares',
+    "TQTF": 'shares',
+    "AUCT": 'bonds',
+    "PACT": 'bonds',
+    "SPOB": 'bonds',
+    "TQCB": 'bonds',
+    "TQDB": 'bonds',
+    "TQDU": 'bonds',
+    "TQIR": 'bonds',
+    "TQIU": 'bonds',
+    "TQOB": 'bonds',
+    "TQOD": 'bonds',
+    "TQOE": 'bonds',
+    "TQRD": 'bonds',
+    "TQUD": 'bonds'
   };
 
-  Future<Map<String, List<dynamic>>> fetchSharesData(String boardId) async {
-    final Response response = await _client.get(Uri.parse(
-        'https://iss.moex.com/iss/engines/stock/markets/shares/boards/$boardId/securities.json?iss.meta=off&iss.only=securities&securities.columns=SECID,SECNAME,BOARDID,ISIN'));
+  Future<Map<String, List<dynamic>>> fetchData(String boardId) async {
+    final String market = _boardIds[boardId]!;
+    final String lotVal = market == 'bonds' ? ',LOTVALUE' : '';
 
-    final decoded = json.decode(response.body);
+    final Response response = await _client.get(Uri.parse('''
+      https://iss.moex.com/iss/engines/stock/markets/$market/
+      boards/$boardId/securities.json?iss.meta=off&iss.only=securities&
+      securities.columns=SECID,SECNAME,BOARDID,ISIN$lotVal'''));
+
+    final decoded = _decode(response);
 
     Map<String, List<dynamic>> data = {};
-    // List<List<String>> decodedString = decoded['securities']['data'].map((s) => s as List<String>).toList();
 
     for (List<dynamic> item in decoded['securities']['data']) {
       data[item[0]] = item.sublist(1);
@@ -56,10 +61,12 @@ class NetworkProvider {
 
   Future<Map<String, double>> fetchPrices(String boardId) async {
     final String market = _boardIds[boardId]!;
-    final Response response = await _client.get(Uri.parse(
-        'https://iss.moex.com/iss/engines/stock/markets/$market/boards/$boardId/securities.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST'));
+    final Response response = await _client.get(Uri.parse('''
+      https://iss.moex.com/iss/engines/stock/markets/$market/
+      boards/$boardId/securities.json?iss.meta=off&iss.only=marketdata&
+      marketdata.columns=SECID,LAST'''));
 
-    final decoded = json.decode(response.body);
+    final decoded = _decode(response);
 
     Map<String, double> secidPrice = {};
 
@@ -69,5 +76,13 @@ class NetworkProvider {
     }
 
     return secidPrice;
+  }
+
+  dynamic _decode(Response response) {
+    if (response.statusCode != 200) {
+      throw Exception('An error has occured');
+    }
+
+    return json.decode(response.body);
   }
 }
