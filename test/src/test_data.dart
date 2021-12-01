@@ -57,5 +57,4 @@ Map<String, double> securitiesPrices = {
   'ACKO': 5.26,
   'AFKS': 27.001,
   'AFLT': 66.04
-  // TODO: добавить цены других бумаг
 };
