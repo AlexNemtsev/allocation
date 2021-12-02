@@ -1,8 +1,7 @@
 import 'package:http/http.dart';
 import 'dart:convert';
 
-// Этот класс должен выполнять две функции
-// TODO: Возврат таблиц securities
+//TODO: Передалать в Singleton?
 class NetworkProvider {
   NetworkProvider([Client? client]) {
     client ??= Client();
@@ -39,7 +38,7 @@ class NetworkProvider {
     "TQUD": 'bonds'
   };
 
-  Future<Map<String, List<dynamic>>> fetchData(String boardId) async {
+  Future<List<dynamic>> fetchData(String boardId) async {
     final String market = _boardIds[boardId]!;
     final String lotVal = market == 'bonds' ? ',LOTVALUE' : '';
 
@@ -47,27 +46,18 @@ class NetworkProvider {
 
     final decoded = _decode(response);
 
-    Map<String, List<dynamic>> data = {};
-
-    for (List<dynamic> item in decoded['securities']['data']) {
-      data[item[0]] = item.sublist(1);
-    }
+    List<dynamic> data = decoded['securities']['data'];
 
     return data;
   }
 
-  Future<Map<String, double>> fetchPrices(String boardId) async {
+  Future<List<dynamic>> fetchPrices(String boardId) async {
     final String market = _boardIds[boardId]!;
     final Response response = await _client.get(Uri.parse('https://iss.moex.com/iss/engines/stock/markets/$market/boards/$boardId/securities.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST'));
 
     final decoded = _decode(response);
 
-    Map<String, double> secidPrice = {};
-
-    for (List<dynamic> item in decoded["marketdata"]["data"]) {
-      secidPrice[item[0]] = item[1].toDouble();
-      // В цену может прилететь целое число, поэтому здесь нужно явное преобразование к double
-    }
+    List<dynamic> secidPrice = decoded["marketdata"]["data"];
 
     return secidPrice;
   }

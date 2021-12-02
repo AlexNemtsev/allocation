@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:allocation/src/network_provider.dart';
+import 'package:allocation/src/providers/network_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'test_data.dart';
+import '../test_data.dart';
 
 void main() {
   test('fetchPrices recives prices of securities using board_id', () async {
@@ -15,7 +15,7 @@ void main() {
 
     NetworkProvider networkProvider = NetworkProvider(client);
 
-    Map<String, double> prices = await networkProvider.fetchPrices(boardId);
+    List<dynamic> prices = await networkProvider.fetchPrices(boardId);
 
     expect(prices, equals(securitiesPrices));
   });
@@ -29,8 +29,7 @@ void main() {
     });
     NetworkProvider networkProvider = NetworkProvider(client);
 
-    Map<String, List<dynamic>> data =
-        await networkProvider.fetchData(boardId);
+    List<dynamic> data = await networkProvider.fetchData(boardId);
 
     expect(data, equals(sharesData));
   });
@@ -39,7 +38,7 @@ void main() {
     final client = MockClient((request) async {
       return Response(json.encode(MOEXSharesPrices), 500);
     });
-    
+
     NetworkProvider networkProvider = NetworkProvider(client);
 
     expect(networkProvider.fetchPrices('TQBR'), throwsException);
