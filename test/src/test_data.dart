@@ -1,13 +1,3 @@
-Map<String, dynamic> sharesBoardIds = {
-  "securities": {
-    "columns": ["secid", "primary_boardid"],
-    "data": [
-      ["AFLT", "TQBR"],
-      ["AFLT_CLT", "RFUD"]
-    ]
-  }
-};
-
 Map<String, String> boardIds = {
   'AFLT': 'TQBR', // Акции
   'TSPX': 'TQTD', // ETF, $
@@ -45,13 +35,6 @@ Map<String, dynamic> MOEXSharesData = {
   }
 };
 
-// Map<String, List<String>> sharesData = {
-//   'ABRD': ['Абрау-Дюрсо ПАО ао', 'TQBR', 'RU000A0JS5T7'],
-//   'ACKO': ['АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'RU000A0JXS91'],
-//   'AFKS': ['АФК "Система" ПАО ао', 'TQBR', 'RU000A0DQZE3'],
-//   'AFLT': ['Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'RU0009062285']
-// };
-
 List<dynamic> sharesData = [
   ['ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR', 'RU000A0JS5T7'],
   ['ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'RU000A0JXS91'],
@@ -59,9 +42,16 @@ List<dynamic> sharesData = [
   ['AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'RU0009062285']
 ];
 
-List<List<dynamic>> securitiesPrices = [
+List<List> securitiesPrices = [
   ["ABRD", 197],
   ["ACKO", 5.26],
   ["AFKS", 27.001],
   ["AFLT", 66.04]
+];
+
+List<Map<String, dynamic>> dbSecuritiesPrices = [
+  {'secid': 'ABRD', 'price': 197},
+  {'secid': 'ACKO', 'price': 5.26},
+  {'secid': 'AFKS', 'price': 27.001},
+  {'secid': 'AFLT', 'price': 66.04}
 ];
