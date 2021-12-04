@@ -4,15 +4,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:async';
 
-class DbDataProvider {
+class DbProvider {
   static late Database _db;
 
-  static DbDataProvider? _provider;
+  static DbProvider? _provider;
 
-  DbDataProvider._();
+  DbProvider._();
 
-  static Future<DbDataProvider> getInstance([String? path]) async {
-    _provider ??= DbDataProvider._();
+  static Future<DbProvider> getInstance([String? path]) async {
+    _provider ??= DbProvider._();
 
     await init(path);
     return _provider!;
@@ -34,11 +34,17 @@ class DbDataProvider {
     );
   }
 
-  Future<void> insertToPrices(List<List> data) async {
+  Future<void> insertPrices(List<List> data) async {
     for (List securiry in data) {
       await _db.transaction((txn) async {
         await txn.rawInsert('INSERT INTO prices(secid, price) VALUES (?, ?)', securiry);
       });
+    }
+  }
+
+  Future<void> updatePrices(List<List> data) async {
+    for (List securiry in data) {
+      _db.rawUpdate('UPDATE prices SET price = ? WHERE secid = ?', securiry.reversed.toList());
     }
   }
 

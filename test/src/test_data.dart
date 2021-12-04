@@ -10,7 +10,7 @@ Map<String, String> boardIds = {
 };
 
 // ignore: non_constant_identifier_names
-Map<String, dynamic> MOEXSharesPrices = {
+Map<String, dynamic> MOEXSecPrices = {
   "marketdata": {
     "columns": ["SECID", "LAST"],
     "data": [
@@ -21,6 +21,32 @@ Map<String, dynamic> MOEXSharesPrices = {
     ]
   }
 };
+
+List<List> secPrices = [
+  ["ABRD", 197],
+  ["ACKO", 5.26],
+  ["AFKS", 27.001],
+  ["AFLT", 66.04]
+];
+
+List<Map<String, dynamic>> dbSecPrices = [
+  {'secid': 'ABRD', 'price': 197},
+  {'secid': 'ACKO', 'price': 5.26},
+  {'secid': 'AFKS', 'price': 27.001},
+  {'secid': 'AFLT', 'price': 66.04}
+];
+
+List<List> secPricesUpdated = [
+  ["AFKS", 0],
+  ["AFLT", 0]
+];
+
+List<Map<String, dynamic>> dbSecPricesUpdated = [
+  {'secid': 'ABRD', 'price': 197},
+  {'secid': 'ACKO', 'price': 5.26},
+  {'secid': 'AFKS', 'price': 0},
+  {'secid': 'AFLT', 'price': 0}
+];
 
 // ignore: non_constant_identifier_names
 Map<String, dynamic> MOEXSharesData = {
@@ -40,18 +66,4 @@ List<dynamic> sharesData = [
   ['ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'RU000A0JXS91'],
   ['AFKS', 'АФК "Система" ПАО ао', 'TQBR', 'RU000A0DQZE3'],
   ['AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'RU0009062285']
-];
-
-List<List> securitiesPrices = [
-  ["ABRD", 197],
-  ["ACKO", 5.26],
-  ["AFKS", 27.001],
-  ["AFLT", 66.04]
-];
-
-List<Map<String, dynamic>> dbSecuritiesPrices = [
-  {'secid': 'ABRD', 'price': 197},
-  {'secid': 'ACKO', 'price': 5.26},
-  {'secid': 'AFKS', 'price': 27.001},
-  {'secid': 'AFLT', 'price': 66.04}
 ];

@@ -10,14 +10,14 @@ void main() {
   test('fetchPrices recives prices of securities using board_id', () async {
     String boardId = 'TQBR';
     final client = MockClient((request) async {
-      return Response(json.encode(MOEXSharesPrices), 200);
+      return Response(json.encode(MOEXSecPrices), 200);
     });
 
     NetworkProvider networkProvider = NetworkProvider(client);
 
     List<dynamic> prices = await networkProvider.fetchPrices(boardId);
 
-    expect(prices, equals(securitiesPrices));
+    expect(prices, equals(secPrices));
   });
 
   test('fetchSharesData recives secid, name, boardid, isin', () async {
@@ -36,7 +36,7 @@ void main() {
 
   test('Throw an exeption when http call completed with an error', () {
     final client = MockClient((request) async {
-      return Response(json.encode(MOEXSharesPrices), 500);
+      return Response(json.encode(MOEXSecPrices), 500);
     });
 
     NetworkProvider networkProvider = NetworkProvider(client);
