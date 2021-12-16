@@ -11,8 +11,7 @@ void main() {
   });
 
   test('Writing/reading prices in/from db', () async {
-    DbProvider dbProvider =
-        await DbProvider.getInstance(inMemoryDatabasePath);
+    DbProvider dbProvider = await DbProvider.getInstance(inMemoryDatabasePath);
     await dbProvider.insertPrices(secPrices);
 
     List<Map<String, dynamic>> dbQuery = await dbProvider.getPrices();
@@ -23,15 +22,47 @@ void main() {
   });
 
   test('Updating prices', () async {
-    DbProvider dbProvider =
-        await DbProvider.getInstance(inMemoryDatabasePath);
+    DbProvider dbProvider = await DbProvider.getInstance(inMemoryDatabasePath);
 
     await dbProvider.insertPrices(secPrices);
     await dbProvider.updatePrices(secPricesUpdated);
-    
+
     List<Map<String, dynamic>> dbQuery = await dbProvider.getPrices();
-    
+
     expect(dbQuery, equals(dbSecPricesUpdated));
     dbProvider.dispose();
+  });
+
+  test('Writing/reading securities data in/from db', () async {
+    DbProvider dbProvider = await DbProvider.getInstance(inMemoryDatabasePath);
+    await dbProvider.insertData(sharesData);
+
+    List<Map<String, dynamic>> dbQuery = await dbProvider.getData();
+
+    expect(dbQuery, equals(dbSharesData));
+
+    await dbProvider.dispose();
+  });
+
+  test('Updating table data', () async {
+    DbProvider dbProvider = await DbProvider.getInstance(inMemoryDatabasePath);
+    await dbProvider.insertData(sharesData);
+    await dbProvider.updateData(sharesDataUpd);
+
+    List<Map<String, dynamic>> dbQuery = await dbProvider.getData();
+
+    expect(dbQuery, equals(dbSharesDataUpd));
+
+    await dbProvider.dispose();
+  });
+
+  test('Empty db returns empty list', () async {
+    DbProvider dbProvider = await DbProvider.getInstance(inMemoryDatabasePath);
+
+    List<Map<String, dynamic>> dbQuery = await dbProvider.getData();
+
+    expect(dbQuery, equals(<Map<String, dynamic>>[]));
+
+    await dbProvider.dispose();
   });
 }

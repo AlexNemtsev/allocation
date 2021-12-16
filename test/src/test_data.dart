@@ -61,9 +61,75 @@ Map<String, dynamic> MOEXSharesData = {
   }
 };
 
-List<dynamic> sharesData = [
+List<List> sharesData = [
   ['ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR', 'RU000A0JS5T7'],
   ['ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'RU000A0JXS91'],
   ['AFKS', 'АФК "Система" ПАО ао', 'TQBR', 'RU000A0DQZE3'],
   ['AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'RU0009062285']
+];
+
+List<List> sharesDataUpd = [
+  ['ABRD', 'Абрау', 'TQBR', 'RU000A0JS5T7']
+];
+
+List<Map<String, dynamic>> dbSharesData = [
+  {
+    'secid': 'ABRD',
+    'secname': 'Абрау-Дюрсо ПАО ао',
+    'boardid': 'TQBR',
+    'isin': 'RU000A0JS5T7',
+    'lotvalue': 100
+  },
+  {
+    'secid': 'ACKO',
+    'secname': 'АСКО-СТРАХОВАНИЕ ПАО ао',
+    'boardid': 'TQBR',
+    'isin': 'RU000A0JXS91',
+    'lotvalue': 100
+  },
+  {
+    'secid': 'AFKS',
+    'secname': 'АФК "Система" ПАО ао',
+    'boardid': 'TQBR',
+    'isin': 'RU000A0DQZE3',
+    'lotvalue': 100
+  },
+  {
+    'secid': 'AFLT',
+    'secname': 'Аэрофлот-росс.авиалин(ПАО)ао',
+    'boardid': 'TQBR',
+    'isin': 'RU0009062285',
+    'lotvalue': 100
+  }
+];
+
+List<Map<String, dynamic>> dbSharesDataUpd = [
+  {
+    'secid': 'ABRD',
+    'secname': 'Абрау',
+    'boardid': 'TQBR',
+    'isin': 'RU000A0JS5T7',
+    'lotvalue': 100
+  },
+  {
+    'secid': 'ACKO',
+    'secname': 'АСКО-СТРАХОВАНИЕ ПАО ао',
+    'boardid': 'TQBR',
+    'isin': 'RU000A0JXS91',
+    'lotvalue': 100
+  },
+  {
+    'secid': 'AFKS',
+    'secname': 'АФК "Система" ПАО ао',
+    'boardid': 'TQBR',
+    'isin': 'RU000A0DQZE3',
+    'lotvalue': 100
+  },
+  {
+    'secid': 'AFLT',
+    'secname': 'Аэрофлот-росс.авиалин(ПАО)ао',
+    'boardid': 'TQBR',
+    'isin': 'RU0009062285',
+    'lotvalue': 100
+  }
 ];
