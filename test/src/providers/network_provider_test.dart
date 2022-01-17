@@ -20,7 +20,7 @@ void main() {
     expect(prices, equals(secPrices));
   });
 
-  test('fetchSharesData recives secid, name, boardid, isin', () async {
+  test('fetchSharesData recives isin, secid, name, boardid', () async {
     String boardId = 'TQBR';
     final client = MockClient((request) async {
       return Response(json.encode(MOEXSharesData), 200, headers: {

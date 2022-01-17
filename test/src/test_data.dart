@@ -53,19 +53,19 @@ Map<String, dynamic> MOEXSharesData = {
   'securities': {
     'columns': ['SECID', 'SECNAME', 'BOARDID', 'ISIN'],
     'data': [
-      ['ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR', 'RU000A0JS5T7'],
-      ['ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'RU000A0JXS91'],
-      ['AFKS', 'АФК "Система" ПАО ао', 'TQBR', 'RU000A0DQZE3'],
-      ['AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'RU0009062285']
+      ['RU000A0JS5T7', 'ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR'],
+      ['RU000A0JXS91', 'ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR'],
+      ['RU000A0DQZE3', 'AFKS', 'АФК "Система" ПАО ао', 'TQBR'],
+      ['RU0009062285', 'AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR']
     ]
   }
 };
 
 List<List> sharesData = [
-  ['ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR', 'RU000A0JS5T7'],
-  ['ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'RU000A0JXS91'],
-  ['AFKS', 'АФК "Система" ПАО ао', 'TQBR', 'RU000A0DQZE3'],
-  ['AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'RU0009062285']
+  ['RU000A0JS5T7', 'ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR'],
+  ['RU000A0JXS91', 'ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR'],
+  ['RU000A0DQZE3', 'AFKS', 'АФК "Система" ПАО ао', 'TQBR'],
+  ['RU0009062285', 'AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR']
 ];
 
 List<List> sharesDataUpd = [

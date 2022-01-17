@@ -41,8 +41,8 @@ class NetworkProvider {
   Future<List<dynamic>> fetchData(String boardId) async {
     final String market = _boardIds[boardId]!;
     final String lotVal = market == 'bonds' ? ',LOTVALUE' : '';
-
-    final Response response = await _client.get(Uri.parse('https://iss.moex.com/iss/engines/stock/markets/$market/boards/$boardId/securities.json?iss.meta=off&iss.only=securities&securities.columns=SECID,SECNAME,BOARDID,ISIN$lotVal'));
+    //TODO: Добавить в запрос CURRENCYID
+    final Response response = await _client.get(Uri.parse('https://iss.moex.com/iss/engines/stock/markets/$market/boards/$boardId/securities.json?iss.meta=off&iss.only=securities&securities.columns=ISIN,SECID,SECNAME,BOARDID$lotVal'));
 
     final decoded = _decode(response);
 

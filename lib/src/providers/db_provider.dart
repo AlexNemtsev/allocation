@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -32,6 +31,7 @@ class DbProvider {
         newDb
             .execute('CREATE TABLE Prices (secid TEXT PRIMARY KEY, price NUM)');
         newDb.execute(
+          // TODO: Добавить поле currencyid
             'CREATE TABLE Data (secid TEXT PRIMARY KEY, secname TEXT, boardid TEXT, isin TEXT, lotvalue NUM DEFAULT 100)');
       },
     );
