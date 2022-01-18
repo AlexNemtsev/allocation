@@ -31,8 +31,7 @@ class DbProvider {
         newDb
             .execute('CREATE TABLE Prices (secid TEXT PRIMARY KEY, price NUM)');
         newDb.execute(
-          // TODO: Добавить поле currencyid
-            'CREATE TABLE Data (secid TEXT PRIMARY KEY, secname TEXT, boardid TEXT, isin TEXT, lotvalue NUM DEFAULT 100)');
+            'CREATE TABLE Data (isin TEXT PRIMARY KEY, secid TEXT UNIQUE, secname TEXT, boardid TEXT, currencyid TEXT, lotvalue NUM DEFAULT 100)');
       },
     );
   }
@@ -69,17 +68,17 @@ class DbProvider {
   }
 
   Future<void> insertData(List<List> data) async {
-    String lotval = data[0].length == 5 ? ', lotvalue' : '';
-    String qMark = data[0].length == 5 ? ', ?' : '';
+    String lotval = data[0].length == 6 ? ', lotvalue' : '';
+    String qMark = data[0].length == 6 ? ', ?' : '';
     String query =
-        'INSERT INTO Data(secid, secname, boardid, isin$lotval) VALUES (?, ?, ?, ?$qMark)';
+        'INSERT INTO Data(isin, secid, secname, boardid, currencyid$lotval) VALUES (?, ?, ?, ?, ?$qMark)';
     await _insert(query, data);
   }
 
   Future<void> updateData(List<List> data) async {
-    String lotval = data[0].length == 5 ? ', lotvalue = ?' : '';
+    String lotval = data[0].length == 6 ? ', lotvalue = ?' : '';
     String query =
-        'UPDATE Data SET secname = ?, boardid = ?, isin = ?$lotval WHERE secid = ?';
+        'UPDATE Data SET secid = ?, secname = ?, boardid = ?, currencyid = ?$lotval WHERE isin = ?';
     await _update(query, data);
   }
 

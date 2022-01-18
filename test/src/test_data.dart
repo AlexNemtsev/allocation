@@ -51,25 +51,25 @@ List<Map<String, dynamic>> dbSecPricesUpdated = [
 // ignore: non_constant_identifier_names
 Map<String, dynamic> MOEXSharesData = {
   'securities': {
-    'columns': ['SECID', 'SECNAME', 'BOARDID', 'ISIN'],
+    'columns': ['ISIN', 'SECID', 'SECNAME', 'BOARDID'],
     'data': [
-      ['RU000A0JS5T7', 'ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR'],
-      ['RU000A0JXS91', 'ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR'],
-      ['RU000A0DQZE3', 'AFKS', 'АФК "Система" ПАО ао', 'TQBR'],
-      ['RU0009062285', 'AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR']
+      ['RU000A0JS5T7', 'ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR', 'SUR'],
+      ['RU000A0JXS91', 'ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'SUR'],
+      ['RU000A0DQZE3', 'AFKS', 'АФК "Система" ПАО ао', 'TQBR', 'SUR'],
+      ['RU0009062285', 'AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'SUR']
     ]
   }
 };
 
 List<List> sharesData = [
-  ['RU000A0JS5T7', 'ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR'],
-  ['RU000A0JXS91', 'ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR'],
-  ['RU000A0DQZE3', 'AFKS', 'АФК "Система" ПАО ао', 'TQBR'],
-  ['RU0009062285', 'AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR']
+  ['RU000A0JS5T7', 'ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR', 'SUR'],
+  ['RU000A0JXS91', 'ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'SUR'],
+  ['RU000A0DQZE3', 'AFKS', 'АФК "Система" ПАО ао', 'TQBR', 'SUR'],
+  ['RU0009062285', 'AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'SUR']
 ];
 
 List<List> sharesDataUpd = [
-  ['ABRD', 'Абрау', 'TQBR', 'RU000A0JS5T7']
+  ['RU000A0JS5T7', 'ABRD', 'Абрау', 'TQBR', 'SUR']
 ];
 
 List<Map<String, dynamic>> dbSharesData = [
@@ -78,28 +78,32 @@ List<Map<String, dynamic>> dbSharesData = [
     'secname': 'Абрау-Дюрсо ПАО ао',
     'boardid': 'TQBR',
     'isin': 'RU000A0JS5T7',
-    'lotvalue': 100
+    'lotvalue': 100,
+    'currencyid': 'SUR'
   },
   {
     'secid': 'ACKO',
     'secname': 'АСКО-СТРАХОВАНИЕ ПАО ао',
     'boardid': 'TQBR',
     'isin': 'RU000A0JXS91',
-    'lotvalue': 100
+    'lotvalue': 100,
+    'currencyid': 'SUR'
   },
   {
     'secid': 'AFKS',
     'secname': 'АФК "Система" ПАО ао',
     'boardid': 'TQBR',
     'isin': 'RU000A0DQZE3',
-    'lotvalue': 100
+    'lotvalue': 100,
+    'currencyid': 'SUR'
   },
   {
     'secid': 'AFLT',
     'secname': 'Аэрофлот-росс.авиалин(ПАО)ао',
     'boardid': 'TQBR',
     'isin': 'RU0009062285',
-    'lotvalue': 100
+    'lotvalue': 100,
+    'currencyid': 'SUR'
   }
 ];
 
@@ -109,27 +113,31 @@ List<Map<String, dynamic>> dbSharesDataUpd = [
     'secname': 'Абрау',
     'boardid': 'TQBR',
     'isin': 'RU000A0JS5T7',
-    'lotvalue': 100
+    'lotvalue': 100,
+    'currencyid': 'SUR'
   },
   {
     'secid': 'ACKO',
     'secname': 'АСКО-СТРАХОВАНИЕ ПАО ао',
     'boardid': 'TQBR',
     'isin': 'RU000A0JXS91',
-    'lotvalue': 100
+    'lotvalue': 100,
+    'currencyid': 'SUR'
   },
   {
     'secid': 'AFKS',
     'secname': 'АФК "Система" ПАО ао',
     'boardid': 'TQBR',
     'isin': 'RU000A0DQZE3',
-    'lotvalue': 100
+    'lotvalue': 100,
+    'currencyid': 'SUR'
   },
   {
     'secid': 'AFLT',
     'secname': 'Аэрофлот-росс.авиалин(ПАО)ао',
     'boardid': 'TQBR',
     'isin': 'RU0009062285',
-    'lotvalue': 100
+    'lotvalue': 100,
+    'currencyid': 'SUR'
   }
 ];
