@@ -1,3 +1,6 @@
+import 'package:allocation/src/dto/security_data.dart';
+import 'package:allocation/src/dto/security_price.dart';
+
 Map<String, String> boardIds = {
   'AFLT': 'TQBR', // Акции
   'TSPX': 'TQTD', // ETF, $
@@ -10,23 +13,25 @@ Map<String, String> boardIds = {
 };
 
 // ignore: non_constant_identifier_names
-Map<String, dynamic> MOEXSecPrices = {
-  "marketdata": {
-    "columns": ["SECID", "LAST"],
-    "data": [
-      ["ABRD", 197],
-      ["ACKO", 5.26],
-      ["AFKS", 27.001],
-      ["AFLT", 66.04]
+List<dynamic> MOEXSecPrices = [
+  {
+    "charsetinfo": {"name": "utf-8"}
+  },
+  {
+    "marketdata": [
+      {"SECID": "ABRD", "LAST": 183.5},
+      {"SECID": "ACKO", "LAST": null},
+      {"SECID": "AFKS", "LAST": 13.89},
+      {"SECID": "AFLT", "LAST": 38.8}
     ]
   }
-};
+];
 
-List<List> secPrices = [
-  ["ABRD", 197],
-  ["ACKO", 5.26],
-  ["AFKS", 27.001],
-  ["AFLT", 66.04]
+List<SecurityPrice> secPrices = [
+  SecurityPrice.fromJSON({"SECID": "ABRD", "LAST": 183.5}),
+  SecurityPrice.fromJSON({"SECID": "ACKO", "LAST": null}),
+  SecurityPrice.fromJSON({"SECID": "AFKS", "LAST": 13.89}),
+  SecurityPrice.fromJSON({"SECID": "AFLT", "LAST": 38.8}),
 ];
 
 List<Map<String, dynamic>> dbSecPrices = [
@@ -49,23 +54,73 @@ List<Map<String, dynamic>> dbSecPricesUpdated = [
 ];
 
 // ignore: non_constant_identifier_names
-Map<String, dynamic> MOEXSharesData = {
-  'securities': {
-    'columns': ['ISIN', 'SECID', 'SECNAME', 'BOARDID'],
-    'data': [
-      ['RU000A0JS5T7', 'ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR', 'SUR'],
-      ['RU000A0JXS91', 'ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'SUR'],
-      ['RU000A0DQZE3', 'AFKS', 'АФК "Система" ПАО ао', 'TQBR', 'SUR'],
-      ['RU0009062285', 'AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'SUR']
+List<dynamic> MOEXSharesData = [
+  {
+    "charsetinfo": {"name": "utf-8"}
+  },
+  {
+    "securities": [
+      {
+        "SECID": "ABRD",
+        "SECNAME": "Абрау-Дюрсо ПАО ао",
+        "BOARDID": "TQBR",
+        "ISIN": "RU000A0JS5T7",
+        "CURRENCYID": "SUR"
+      },
+      {
+        "SECID": "ACKO",
+        "SECNAME": "АСКО-СТРАХОВАНИЕ ПАО ао",
+        "BOARDID": "TQBR",
+        "ISIN": "RU000A0JXS91",
+        "CURRENCYID": "SUR"
+      },
+      {
+        "SECID": "AFKS",
+        "SECNAME": "АФК \"Система\" ПАО ао",
+        "BOARDID": "TQBR",
+        "ISIN": "RU000A0DQZE3",
+        "CURRENCYID": "SUR"
+      },
+      {
+        "SECID": "AFLT",
+        "SECNAME": "Аэрофлот-росс.авиалин(ПАО)ао",
+        "BOARDID": "TQBR",
+        "ISIN": "RU0009062285",
+        "CURRENCYID": "SUR"
+      },
     ]
-  }
-};
+  },
+];
 
-List<List> sharesData = [
-  ['RU000A0JS5T7', 'ABRD', 'Абрау-Дюрсо ПАО ао', 'TQBR', 'SUR'],
-  ['RU000A0JXS91', 'ACKO', 'АСКО-СТРАХОВАНИЕ ПАО ао', 'TQBR', 'SUR'],
-  ['RU000A0DQZE3', 'AFKS', 'АФК "Система" ПАО ао', 'TQBR', 'SUR'],
-  ['RU0009062285', 'AFLT', 'Аэрофлот-росс.авиалин(ПАО)ао', 'TQBR', 'SUR']
+List<SecurityData> sharesData = [
+  SecurityData.fromJSON({
+    "SECID": "ABRD",
+    "SECNAME": "Абрау-Дюрсо ПАО ао",
+    "BOARDID": "TQBR",
+    "ISIN": "RU000A0JS5T7",
+    "CURRENCYID": "SUR"
+  }),
+  SecurityData.fromJSON({
+    "SECID": "ACKO",
+    "SECNAME": "АСКО-СТРАХОВАНИЕ ПАО ао",
+    "BOARDID": "TQBR",
+    "ISIN": "RU000A0JXS91",
+    "CURRENCYID": "SUR"
+  }),
+  SecurityData.fromJSON({
+    "SECID": "AFKS",
+    "SECNAME": "АФК \"Система\" ПАО ао",
+    "BOARDID": "TQBR",
+    "ISIN": "RU000A0DQZE3",
+    "CURRENCYID": "SUR"
+  }),
+  SecurityData.fromJSON({
+    "SECID": "AFLT",
+    "SECNAME": "Аэрофлот-росс.авиалин(ПАО)ао",
+    "BOARDID": "TQBR",
+    "ISIN": "RU0009062285",
+    "CURRENCYID": "SUR"
+  }),
 ];
 
 List<List> sharesDataUpd = [

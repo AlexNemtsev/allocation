@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:allocation/src/providers/network_provider.dart';
+import 'package:allocation/src/dto/security_data.dart';
+import 'package:allocation/src/dto/security_price.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
@@ -15,7 +17,7 @@ void main() {
 
     NetworkProvider networkProvider = NetworkProvider(client);
 
-    List<dynamic> prices = await networkProvider.fetchPrices(boardId);
+    List<SecurityPrice> prices = await networkProvider.fetchPrices(boardId);
 
     expect(prices, equals(secPrices));
   });
@@ -29,7 +31,7 @@ void main() {
     });
     NetworkProvider networkProvider = NetworkProvider(client);
 
-    List<dynamic> data = await networkProvider.fetchData(boardId);
+    List<SecurityData> data = await networkProvider.fetchData(boardId);
 
     expect(data, equals(sharesData));
   });

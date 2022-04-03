@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:allocation/widgets/card_elements.dart';
 
 class HistoryCard extends StatelessWidget {
   const HistoryCard(
@@ -6,65 +7,34 @@ class HistoryCard extends StatelessWidget {
       required this.name,
       required this.currency,
       required this.isSold,
-      required this.cost,
+      required this.price,
       required this.amount,
       required this.secid,
       required this.date})
       : super(key: key);
 
-  static final fistLineStyle =
-      TextStyle(fontSize: 25, color: Colors.green[900]);
-  static final secondLineStyle = TextStyle(
-    fontSize: 18,
-    color: Colors.lightGreen[900],
-    fontWeight: FontWeight.w300,
-    fontStyle: FontStyle.italic,
-  );
-
   final String name;
   final String currency;
   final bool isSold;
-  final double cost;
+  final double price;
   final int amount;
   final String secid;
   final String date;
 
-  static const kArrowDown = Icon(
-    Icons.arrow_drop_down,
-    size: 30,
-    color: Colors.green,
-  );
-
-  static const kArrowUp = Icon(
-    Icons.arrow_drop_up,
-    size: 30,
-    color: Colors.red,
-  );
-
-  static const Map<String, String> curs = {'SUR': '₽', 'USD': '\$', 'EUR': '€'};
-
+  // TODO: Эту карточку с небольшими изменениями можно переиспользовать и в других экранах
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
           Row(
             children: [
               Expanded(
-                child: FittedBox(
-                  child: Text(
-                    // 'Длинное название ценной бумаги',
-                    name,
-                    style: fistLineStyle,
-                  ),
-                ),
+                child: SecurityNameWidget(name: name),
               ),
-              isSold ? kArrowUp : kArrowDown,
-              Text(
-                '${curs[currency]}$cost',
-                style: fistLineStyle,
-              ),
+              SecurityPriceWidget(
+                  price: price, currency: currency, isSold: isSold)
             ],
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
@@ -73,26 +43,14 @@ class HistoryCard extends StatelessWidget {
           ),
           Row(
             children: [
-              Text(
-                secid,
-                style: secondLineStyle,
-              ),
-              Text(
-                '$amountшт.',
-                style: secondLineStyle,
-              ),
-              Text(
-                date,
-                style: secondLineStyle,
-              ),
+              SecidWidget(secid: secid),
+              AmountWidget(amount: amount),
+              DateWidget(date: date),
             ],
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
         ],
         mainAxisSize: MainAxisSize.min,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black26),
       ),
     );
   }

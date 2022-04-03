@@ -1,5 +1,5 @@
-import 'package:allocation/widgets/history_card.dart';
 import 'package:flutter/material.dart';
+import 'package:allocation/screens/history_screen.dart';
 
 class BotNavBar extends StatefulWidget {
   const BotNavBar({Key? key}) : super(key: key);
@@ -11,14 +11,6 @@ class BotNavBar extends StatefulWidget {
 class _BotNavBarState extends State<BotNavBar> {
   int _selectedIndex = 0;
 
-  static const String name = 'Абрау-Дюрсо ПАО ао';
-  static const String currency = 'SUR';
-  static const bool isSold = false;
-  static const double cost = 88.34;
-  static const int amount = 12;
-  static const String secid = 'ABRD';
-  static const String date = '12.08.2021';
-
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
@@ -26,15 +18,7 @@ class _BotNavBarState extends State<BotNavBar> {
       'Index 0: Портфель',
       style: optionStyle,
     ),
-    HistoryCard(
-      name: name,
-      currency: currency,
-      isSold: isSold,
-      cost: cost,
-      amount: amount,
-      secid: secid,
-      date: date,
-    ),
+    HistoryScreen(),
     Text(
       'Index 2: Пополнения и вывод',
       style: optionStyle,

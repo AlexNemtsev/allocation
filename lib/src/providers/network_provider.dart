@@ -1,5 +1,7 @@
 import 'package:http/http.dart';
 import 'dart:convert';
+import '../dto/security_data.dart';
+import '../dto/security_price.dart';
 
 //TODO: Передалать в Singleton?
 class NetworkProvider {
@@ -38,30 +40,56 @@ class NetworkProvider {
     "TQUD": 'bonds'
   };
 
-  Future<List<dynamic>> fetchData(String boardId) async {
+  Future<List<SecurityData>> fetchData(String boardId) async {
     final String market = _boardIds[boardId]!;
-    final String lotVal = market == 'bonds' ? ',LOTVALUE' : '';
-    
-    final Response response = await _client.get(Uri.parse(
-        'https://iss.moex.com/iss/engines/stock/markets/$market/boards/$boardId/securities.json?iss.meta=off&iss.only=securities&securities.columns=ISIN,SECID,SECNAME,BOARDID,CURRENCYID$lotVal'));
+
+    final url = Uri(
+      scheme: 'https',
+      host: 'iss.moex.com',
+      path: 'iss/engines/stock/markets/$market/boards/$boardId/securities.json',
+      queryParameters: {
+        'iss.meta': 'off',
+        'iss.only': 'securities',
+        'iss.json': 'extended',
+        'securities.columns': 'ISIN,SECID,SECNAME,BOARDID,CURRENCYID,LOTVALUE'
+      },
+    );
+
+    final Response response = await _client.get(url);
 
     final decoded = _decode(response);
 
-    List<dynamic> data = decoded['securities']['data'];
+    List<dynamic> dataJSON = decoded[1]['securities'];
+    List<SecurityData> data = dataJSON
+        .map((e) => SecurityData.fromJSON(e as Map<String, dynamic>))
+        .toList();
 
     return data;
   }
 
-  Future<List<dynamic>> fetchPrices(String boardId) async {
+  Future<List<SecurityPrice>> fetchPrices(String boardId) async {
     final String market = _boardIds[boardId]!;
-    final Response response = await _client.get(Uri.parse(
-        'https://iss.moex.com/iss/engines/stock/markets/$market/boards/$boardId/securities.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST'));
+    final url = Uri(
+      scheme: 'https',
+      host: 'iss.moex.com',
+      path: 'iss/engines/stock/markets/$market/boards/$boardId/securities.json',
+      queryParameters: {
+        'iss.meta': 'off',
+        'iss.only': 'marketdata',
+        'iss.json': 'extended',
+        'marketdata.columns': 'SECID,LAST'
+      },
+    );
+    final response = await _client.get(url);
 
     final decoded = _decode(response);
 
-    List<dynamic> secidPrice = decoded["marketdata"]["data"];
+    List<dynamic> pricesJSON = decoded[1]['marketdata'];
+    List<SecurityPrice> secidPrices = pricesJSON
+        .map((e) => SecurityPrice.fromJSON(e as Map<String, dynamic>))
+        .toList();
 
-    return secidPrice;
+    return secidPrices;
   }
 
   dynamic _decode(Response response) {
