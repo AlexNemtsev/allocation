@@ -3,58 +3,22 @@ import 'dart:convert';
 import '../dto/security_data.dart';
 import '../dto/security_price.dart';
 
-//TODO: Передалать в Singleton?
 class NetworkProvider {
-  NetworkProvider([Client? client]) {
-    client ??= Client();
-    _client = client;
+  Client _client = Client();
+
+  NetworkProvider._internal();
+
+  static final NetworkProvider _instance = NetworkProvider._internal();
+
+  factory NetworkProvider([Client? mockClient]) {
+    if (mockClient != null) {
+      _instance._client = mockClient;
+    }
+    return _instance;
   }
-  late Client _client;
 
-  final Map<String, String> _boardIds = {
-    "SMAL": 'shares',
-    "SPEQ": 'shares',
-    "TQBR": 'shares',
-    "TQDP": 'shares',
-    "TQFD": 'shares',
-    "TQFE": 'shares',
-    "TQIF": 'shares',
-    "TQPD": 'shares',
-    "TQPE": 'shares',
-    "TQPI": 'shares',
-    "TQTD": 'shares',
-    "TQTE": 'shares',
-    "TQTF": 'shares',
-    "AUCT": 'bonds',
-    "PACT": 'bonds',
-    "SPOB": 'bonds',
-    "TQCB": 'bonds',
-    "TQDB": 'bonds',
-    "TQDU": 'bonds',
-    "TQIR": 'bonds',
-    "TQIU": 'bonds',
-    "TQOB": 'bonds',
-    "TQOD": 'bonds',
-    "TQOE": 'bonds',
-    "TQRD": 'bonds',
-    "TQUD": 'bonds'
-  };
-
-  Future<List<SecurityData>> fetchData(String boardId) async {
-    final String market = _boardIds[boardId]!;
-
-    final url = Uri(
-      scheme: 'https',
-      host: 'iss.moex.com',
-      path: 'iss/engines/stock/markets/$market/boards/$boardId/securities.json',
-      queryParameters: {
-        'iss.meta': 'off',
-        'iss.only': 'securities',
-        'iss.json': 'extended',
-        'securities.columns': 'ISIN,SECID,SECNAME,BOARDID,CURRENCYID,LOTVALUE'
-      },
-    );
-
+  Future<List<SecurityData>> fetchData(String boardID) async {
+    final url = _getUrl(boardID, 'securities', 'ISIN,SECID,SECNAME,BOARDID,CURRENCYID,LOTVALUE');
     final Response response = await _client.get(url);
 
     final decoded = _decode(response);
@@ -67,19 +31,8 @@ class NetworkProvider {
     return data;
   }
 
-  Future<List<SecurityPrice>> fetchPrices(String boardId) async {
-    final String market = _boardIds[boardId]!;
-    final url = Uri(
-      scheme: 'https',
-      host: 'iss.moex.com',
-      path: 'iss/engines/stock/markets/$market/boards/$boardId/securities.json',
-      queryParameters: {
-        'iss.meta': 'off',
-        'iss.only': 'marketdata',
-        'iss.json': 'extended',
-        'marketdata.columns': 'SECID,LAST'
-      },
-    );
+  Future<List<SecurityPrice>> fetchPrices(String boardID) async {
+    final url = _getUrl(boardID, 'marketdata', 'SECID,LAST');
     final response = await _client.get(url);
 
     final decoded = _decode(response);
@@ -90,6 +43,54 @@ class NetworkProvider {
         .toList();
 
     return secidPrices;
+  }
+
+  Uri _getUrl(String boardID, String issOnlyParam, String columns) {
+
+    // TODO: Всю эту шляпу можно тянуть с сервера и хранить в б/д
+    // shares https://iss.moex.com/iss/engines/stock/markets/shares/boards?iss.meta=off&boards.columns=boardid
+    final boardIds = {
+      "SMAL": 'shares',
+      "SPEQ": 'shares',
+      "TQBR": 'shares',
+      "TQDP": 'shares',
+      "TQFD": 'shares',
+      "TQFE": 'shares',
+      "TQIF": 'shares',
+      "TQPD": 'shares',
+      "TQPE": 'shares',
+      "TQPI": 'shares',
+      "TQTD": 'shares',
+      "TQTE": 'shares',
+      "TQTF": 'shares',
+      "AUCT": 'bonds',
+      "PACT": 'bonds',
+      "SPOB": 'bonds',
+      "TQCB": 'bonds',
+      "TQDB": 'bonds',
+      "TQDU": 'bonds',
+      "TQIR": 'bonds',
+      "TQIU": 'bonds',
+      "TQOB": 'bonds',
+      "TQOD": 'bonds',
+      "TQOE": 'bonds',
+      "TQRD": 'bonds',
+      "TQUD": 'bonds'
+    };
+
+    final String market = boardIds[boardID]!;
+    final url = Uri(
+      scheme: 'https',
+      host: 'iss.moex.com',
+      path: 'iss/engines/stock/markets/$market/boards/$boardID/securities.json',
+      queryParameters: {
+        'iss.meta': 'off',
+        'iss.only': issOnlyParam,
+        'iss.json': 'extended',
+        '$issOnlyParam.columns': columns
+      },
+    );
+    return url;
   }
 
   dynamic _decode(Response response) {
