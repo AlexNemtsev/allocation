@@ -6,14 +6,12 @@ part of 'security_price.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SecurityPrice _$SecurityPriceFromJson(Map<String, dynamic> json) =>
-    SecurityPrice(
-      json['SECID'] as String,
-      (json['LAST'] as num?)?.toDouble(),
+SecPrice _$SecPriceFromJson(Map<String, dynamic> json) => SecPrice(
+      json['secid'] as String,
+      (json['price'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$SecurityPriceToJson(SecurityPrice instance) =>
-    <String, dynamic>{
-      'SECID': instance.secid,
-      'LAST': instance.price,
+Map<String, dynamic> _$SecPriceToJson(SecPrice instance) => <String, dynamic>{
+      'secid': instance.secid,
+      'price': instance.price,
     };

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({Key? key}) : super(key: key);
 
-  // TODO: Для данных нужно разработать DTO
   static const List<Map<String, dynamic>> history = [
     {
       'name': 'ПАО ЗАО Рога и копыта ао и ап ГДР',

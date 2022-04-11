@@ -3,87 +3,93 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:async';
+import '../dto/security_price.dart';
+import '../dto/security_data.dart';
 
 class DbProvider {
-  static late Database _db;
+  static late Database _db; // Поле, в котором хранится сама база данных
 
   static DbProvider? _provider;
 
-  DbProvider._();
+  DbProvider._internal();
 
   static Future<DbProvider> getInstance([String? path]) async {
-    _provider ??= DbProvider._();
+    _provider ??= DbProvider._internal(); // Создаём объект провайдера
 
-    await _init(path);
+    await _initDB(path); // Инициализируем базу данных
     return _provider!;
   }
 
-  static Future<void> _init(String? path) async {
+  static Future<void> _initDB(String? path) async {
+    // Параметр path нужен для поддержки unit тестов
     if (path == null) {
       Directory documentsDirectory = await getApplicationDocumentsDirectory();
       path = join(documentsDirectory.path, "data.db");
     }
 
+    // Открываем БД, создаём нужные таблицы, если они отсутствуют
     _db = await openDatabase(
       path,
       version: 1,
       onCreate: (Database newDb, int version) {
         newDb
-            .execute('CREATE TABLE Prices (secid TEXT PRIMARY KEY, price NUM)');
+            .execute('CREATE TABLE prices (secid TEXT PRIMARY KEY, price NUM)');
         newDb.execute(
-            'CREATE TABLE Data (isin TEXT PRIMARY KEY, secid TEXT UNIQUE, secname TEXT, boardid TEXT, currencyid TEXT, lotvalue NUM DEFAULT 100)');
+            'CREATE TABLE data (isin TEXT PRIMARY KEY, secid TEXT UNIQUE, secname TEXT, boardid TEXT, currencyid TEXT, lotvalue NUM)');
       },
     );
   }
 
-  Future<void> _insert(String query, List<List> data) async {
-    for (List securiry in data) {
-      await _db.transaction((txn) async {
-        await txn.rawInsert(query, securiry);
-      });
+  Future<void> insertPrices(List<SecPrice> data) async {
+    const table = 'prices';
+    for (SecPrice security in data) {
+      await _db.transaction((txn) => txn.insert(table, security.toJSON()));
     }
   }
 
-  Future<void> _update(String query, List<List> data) async {
-    for (List securiry in data) {
-      // List<dynamic> reversed = [securiry.last] + securiry.sublist(0, securiry.length-1);
-      List<dynamic> reversed = securiry.sublist(1) + <dynamic>[securiry[0]];
-
-      await _db.rawUpdate(query, reversed);
+  Future<void> updatePrices(List<SecPrice> data) async {
+    const table = 'prices';
+    for (SecPrice security in data) {
+      await _db.transaction(
+        (txn) => txn.update(
+          table,
+          security.toJSON(),
+          where: 'secid = ?',
+          whereArgs: [security.secid],
+        ),
+      );
     }
   }
 
-  Future<void> insertPrices(List<List> data) async {
-    const String query = 'INSERT INTO prices(secid, price) VALUES (?, ?)';
-    await _insert(query, data);
+  Future<List<SecPrice>> getPrices() async {
+    final query = await _db.rawQuery('SELECT * FROM prices');
+    return query.map((e) => SecPrice.fromJSON(e)).toList();
   }
 
-  Future<void> updatePrices(List<List> data) async {
-    const String query = 'UPDATE prices SET price = ? WHERE secid = ?';
-    await _update(query, data);
+  Future<void> insertData(List<SecData> data) async {
+    const table = 'data';
+    for (SecData security in data) {
+      await _db.transaction((txn) => txn.insert(table, security.toJSON()));
+    }
   }
 
-  Future<List<Map<String, dynamic>>> getPrices() async {
-    return await _db.rawQuery('SELECT * FROM prices');
+  Future<void> updateData(List<SecData> data) async {
+    const table = 'data';
+    for (var security in data) {
+      await _db.transaction(
+        (txn) => txn.update(
+          table,
+          security.toJSON(),
+          where: 'isin = ?',
+          whereArgs: [security.isin],
+        ),
+      );
+    }
   }
 
-  Future<void> insertData(List<List> data) async {
-    String lotval = data[0].length == 6 ? ', lotvalue' : '';
-    String qMark = data[0].length == 6 ? ', ?' : '';
-    String query =
-        'INSERT INTO Data(isin, secid, secname, boardid, currencyid$lotval) VALUES (?, ?, ?, ?, ?$qMark)';
-    await _insert(query, data);
-  }
-
-  Future<void> updateData(List<List> data) async {
-    String lotval = data[0].length == 6 ? ', lotvalue = ?' : '';
-    String query =
-        'UPDATE Data SET secid = ?, secname = ?, boardid = ?, currencyid = ?$lotval WHERE isin = ?';
-    await _update(query, data);
-  }
-
-  Future<List<Map<String, dynamic>>> getData() async {
-    return await _db.rawQuery('SELECT * FROM Data');
+  Future<List<SecData>> getData() async {
+    List<Map<String, dynamic>> query = await _db.rawQuery('SELECT * FROM Data');
+    return query.map((e) => SecData.fromJSON(e)).toList();
   }
 
   Future<void> dispose() async {

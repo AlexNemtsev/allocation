@@ -3,34 +3,61 @@ import 'package:json_annotation/json_annotation.dart';
 part 'security_data.g.dart';
 
 @JsonSerializable()
-class SecurityData {
-  @JsonKey(name: 'ISIN')
+class SecData {
   final String isin;
-  @JsonKey(name: 'SECID')
   final String secid;
-  @JsonKey(name: 'SECNAME')
-  final String secName;
-  @JsonKey(name: 'BOARDID')
-  final String boardID;
-  @JsonKey(name: 'CURRENCYID')
-  final String currencyID;
-  @JsonKey(name: 'LOTVALUE', defaultValue: 100)
-  final double lotValue;
+  final String secname;
+  final String boardid;
+  final String currencyid;
+  @JsonKey(defaultValue: 100)
+  final double lotvalue;
 
-  SecurityData(this.isin, this.secid, this.secName, this.boardID,
-      this.currencyID, this.lotValue);
+  SecData(this.isin, this.secid, this.secname, this.boardid,
+      this.currencyid, this.lotvalue);
 
-  factory SecurityData.fromJSON(Map<String, dynamic> json) =>
-      _$SecurityDataFromJson(json);
+  factory SecData.fromJSON(Map<String, dynamic> json) =>
+      _$SecDataFromJson(json);
 
-  Map<String, dynamic> toJSON() => _$SecurityDataToJson(this);
+  Map<String, dynamic> toJSON() => _$SecDataToJson(this);
 
   @override
-  bool operator ==(Object other) =>
-      other is SecurityData && other.isin == isin && other.boardID == boardID;
+  int get hashCode {
+    return isin.hashCode ^
+      secid.hashCode ^
+      secname.hashCode ^
+      boardid.hashCode ^
+      currencyid.hashCode ^
+      lotvalue.hashCode;
+  }
 
-  // TODO: переделать hashCode
+  SecData copyWith({
+    String? isin,
+    String? secid,
+    String? secname,
+    String? boardid,
+    String? currencyid,
+    double? lotvalue,
+  }) {
+    return SecData(
+      isin ?? this.isin,
+      secid ?? this.secid,
+      secname ?? this.secname,
+      boardid ?? this.boardid,
+      currencyid ?? this.currencyid,
+      lotvalue ?? this.lotvalue,
+    );
+  }
+
   @override
-  int get hashCode => '$isin$boardID'.hashCode;
-
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+  
+    return other is SecData &&
+      other.isin == isin &&
+      other.secid == secid &&
+      other.secname == secname &&
+      other.boardid == boardid &&
+      other.currencyid == currencyid &&
+      other.lotvalue == lotvalue;
+  }
 }

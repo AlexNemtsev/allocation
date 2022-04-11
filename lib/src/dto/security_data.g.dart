@@ -6,21 +6,20 @@ part of 'security_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SecurityData _$SecurityDataFromJson(Map<String, dynamic> json) => SecurityData(
-      json['ISIN'] as String,
-      json['SECID'] as String,
-      json['SECNAME'] as String,
-      json['BOARDID'] as String,
-      json['CURRENCYID'] as String,
-      (json['LOTVALUE'] as num?)?.toDouble() ?? 100,
+SecData _$SecDataFromJson(Map<String, dynamic> json) => SecData(
+      json['isin'] as String,
+      json['secid'] as String,
+      json['secname'] as String,
+      json['boardid'] as String,
+      json['currencyid'] as String,
+      (json['lotvalue'] as num?)?.toDouble() ?? 100,
     );
 
-Map<String, dynamic> _$SecurityDataToJson(SecurityData instance) =>
-    <String, dynamic>{
-      'ISIN': instance.isin,
-      'SECID': instance.secid,
-      'SECNAME': instance.secName,
-      'BOARDID': instance.boardID,
-      'CURRENCYID': instance.currencyID,
-      'LOTVALUE': instance.lotValue,
+Map<String, dynamic> _$SecDataToJson(SecData instance) => <String, dynamic>{
+      'isin': instance.isin,
+      'secid': instance.secid,
+      'secname': instance.secname,
+      'boardid': instance.boardid,
+      'currencyid': instance.currencyid,
+      'lotvalue': instance.lotvalue,
     };

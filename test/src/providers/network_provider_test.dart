@@ -17,7 +17,7 @@ void main() {
 
     NetworkProvider networkProvider = NetworkProvider(client);
 
-    List<SecurityPrice> prices = await networkProvider.fetchPrices(boardId);
+    List<SecPrice> prices = await networkProvider.fetchPrices(boardId);
 
     expect(prices, equals(secPrices));
   });
@@ -31,7 +31,7 @@ void main() {
     });
     NetworkProvider networkProvider = NetworkProvider(client);
 
-    List<SecurityData> data = await networkProvider.fetchData(boardId);
+    List<SecData> data = await networkProvider.fetchData(boardId);
 
     expect(data, equals(sharesData));
   });

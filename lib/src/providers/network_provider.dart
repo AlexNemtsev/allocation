@@ -17,38 +17,46 @@ class NetworkProvider {
     return _instance;
   }
 
-  Future<List<SecurityData>> fetchData(String boardID) async {
-    final url = _getUrl(boardID, 'securities', 'ISIN,SECID,SECNAME,BOARDID,CURRENCYID,LOTVALUE');
+  Future<List<SecData>> fetchData(String boardID) async {
+    final url = _getUrl(boardID, 'securities',
+        'ISIN,SECID,SECNAME,BOARDID,CURRENCYID,LOTVALUE');
     final Response response = await _client.get(url);
 
     final decoded = _decode(response);
 
     List<dynamic> dataJSON = decoded[1]['securities'];
-    List<SecurityData> data = dataJSON
-        .map((e) => SecurityData.fromJSON(e as Map<String, dynamic>))
+    List<SecData> data = dataJSON
+        .map((e) => _SecData.fromJSON(e as Map<String, dynamic>))
+        .toList()
+        .map((e) => e.copyWith(
+            secid: e.secid,
+            isin: e.isin,
+            boardid: e.boardid,
+            lotvalue: e.lotvalue,
+            secname: e.secname,
+            currencyid: e.currencyid))
         .toList();
 
     return data;
   }
 
-  Future<List<SecurityPrice>> fetchPrices(String boardID) async {
+  Future<List<SecPrice>> fetchPrices(String boardID) async {
     final url = _getUrl(boardID, 'marketdata', 'SECID,LAST');
     final response = await _client.get(url);
 
     final decoded = _decode(response);
 
     List<dynamic> pricesJSON = decoded[1]['marketdata'];
-    List<SecurityPrice> secidPrices = pricesJSON
-        .map((e) => SecurityPrice.fromJSON(e as Map<String, dynamic>))
+    List<SecPrice> secidPrices = pricesJSON
+        .map((e) => _SecPrice.fromJSON(e as Map<String, dynamic>))
+        .toList()
+        .map((e) => e.copyWith(secid: e.secid, price: e.price))
         .toList();
 
     return secidPrices;
   }
 
   Uri _getUrl(String boardID, String issOnlyParam, String columns) {
-
-    // TODO: Всю эту шляпу можно тянуть с сервера и хранить в б/д
-    // shares https://iss.moex.com/iss/engines/stock/markets/shares/boards?iss.meta=off&boards.columns=boardid
     final boardIds = {
       "SMAL": 'shares',
       "SPEQ": 'shares',
@@ -100,4 +108,30 @@ class NetworkProvider {
 
     return json.decode(response.body);
   }
+}
+
+class _SecPrice extends SecPrice {
+  _SecPrice(String secid, double? price) : super(secid, price);
+
+  @override
+  factory _SecPrice.fromJSON(Map<String, dynamic> json) => _SecPrice(
+        json['SECID'] as String,
+        (json['LAST'] as num?)?.toDouble(),
+      );
+}
+
+class _SecData extends SecData {
+  _SecData(String isin, String secid, String secName, String boardID,
+      String currencyID, double lotValue)
+      : super(isin, secid, secName, boardID, currencyID, lotValue);
+
+  @override
+  factory _SecData.fromJSON(Map<String, dynamic> json) => _SecData(
+        json['ISIN'] as String,
+        json['SECID'] as String,
+        json['SECNAME'] as String,
+        json['BOARDID'] as String,
+        json['CURRENCYID'] as String,
+        (json['LOTVALUE'] as num?)?.toDouble() ?? 100,
+      );
 }
